@@ -3,13 +3,13 @@ import { CreateScheduleDto } from './dto/create-schedule.dto';
 import { UpdateScheduleDto } from './dto/update-schedule.dto';
 
 @Injectable()
-export class ScheduleService {
+export class SchedulesService {
   create(createScheduleDto: CreateScheduleDto) {
     return 'This action adds a new schedule';
   }
 
   findAll() {
-    return `This action returns all schedule`;
+    return `This action returns all schedules`;
   }
 
   findOne(id: number) {
