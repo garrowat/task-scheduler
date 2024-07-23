@@ -1,34 +1,72 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { SchedulesService } from './schedules.service';
-import { CreateScheduleDto } from './dto/create-schedule.dto';
-import { UpdateScheduleDto } from './dto/update-schedule.dto';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
+import { ScheduleService } from './schedules.service';
+import { Schedule as ScheduleModel } from '@prisma/client';
+
+/**
+ * A user should be able to:
+ * - Create a schedule
+ * - Retrieve all schedules
+ * - Retrieve a single schedule
+ * - Update a schedule
+ * - Delete a schedule
+ *
+ */
 
 @Controller('schedules')
 export class SchedulesController {
-  constructor(private readonly schedulesService: SchedulesService) {}
+  constructor(private readonly schedulesService: ScheduleService) {}
 
-  @Post()
-  create(@Body() createScheduleDto: CreateScheduleDto) {
-    return this.schedulesService.create(createScheduleDto);
+  @Get('schedule/:id')
+  async getScheduleById(@Param('id') id: string): Promise<ScheduleModel> {
+    return this.schedulesService.schedule({ id: String(id) });
   }
 
-  @Get()
-  findAll() {
-    return this.schedulesService.findAll();
+  @Get('schedules')
+  async getAllSchedules(): Promise<ScheduleModel[]> {
+    return this.schedulesService.schedules({});
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.schedulesService.findOne(+id);
+  @Get('filtered-schedules/:startTime/:endTime')
+  async getFilteredSchedules(
+    @Param('startTime') startTime: string,
+    @Param('endTime') endTime: string,
+  ): Promise<ScheduleModel[]> {
+    return this.schedulesService.schedules({
+      where: {
+        AND: [
+          { startTime: { gte: new Date(startTime) } },
+          { endTime: { lte: new Date(endTime) } },
+        ],
+      },
+    });
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateScheduleDto: UpdateScheduleDto) {
-    return this.schedulesService.update(+id, updateScheduleDto);
+  @Post('schedule')
+  async createSchedule(@Body() data: ScheduleModel): Promise<ScheduleModel> {
+    return this.schedulesService.createSchedule(data);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.schedulesService.remove(+id);
+  @Patch('schedule/:id')
+  async updateSchedule(
+    @Param('id') id: string,
+    @Body() data: ScheduleModel,
+  ): Promise<ScheduleModel> {
+    return this.schedulesService.updateSchedule({
+      where: { id: String(id) },
+      data,
+    });
+  }
+
+  @Delete('schedule/:id')
+  async deleteSchedule(@Param('id') id: string): Promise<ScheduleModel> {
+    return this.schedulesService.deleteSchedule({ id: String(id) });
   }
 }
