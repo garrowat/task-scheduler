@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { Task, Prisma } from '@prisma/client';
 @Injectable()
-export class TaskService {
+export class TasksService {
   constructor(private prisma: PrismaService) {}
 
   async task(
@@ -30,7 +30,21 @@ export class TaskService {
     });
   }
 
-  async createTask(data: Prisma.TaskCreateInput): Promise<Task> {
+  async createTask(data: Prisma.TaskUncheckedCreateInput): Promise<Task> {
+    const startTime = new Date(data.startTime);
+    const endTime = new Date(startTime.getTime() + data.duration * 60000); // Convert duration to milliseconds
+    const conflict = await this.checkForConflict(
+      data.scheduleId,
+      startTime,
+      endTime,
+    );
+
+    if (conflict) {
+      throw new BadRequestException(
+        'Task conflict detected. Cannot create task.',
+      );
+    }
+
     return this.prisma.task.create({ data });
   }
 
@@ -49,5 +63,31 @@ export class TaskService {
     return this.prisma.task.delete({
       where,
     });
+  }
+
+  private async checkForConflict(
+    scheduleId: string,
+    startTime: Date,
+    endTime: Date,
+  ): Promise<boolean> {
+    const conflictingTasks = await this.prisma.task.findMany({
+      where: {
+        scheduleId,
+        AND: [
+          {
+            startTime: {
+              lt: endTime,
+            },
+          },
+          {
+            endTime: {
+              gt: startTime,
+            },
+          },
+        ],
+      },
+    });
+
+    return conflictingTasks.length > 0;
   }
 }
