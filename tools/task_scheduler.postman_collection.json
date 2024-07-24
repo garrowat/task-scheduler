@@ -1,0 +1,238 @@
+{
+  "info": {
+    "_postman_id": "c8b42bdb-aaa2-4fc9-bcff-3a154e9033f4",
+    "name": "Task Scheduler",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "22808022",
+    "_collection_link": "https://benchsci-cli.postman.co/workspace/BenchSci~952eb77c-7604-47af-ad25-71f3761b4665/collection/22808022-c8b42bdb-aaa2-4fc9-bcff-3a154e9033f4?action=share&source=collection_link&creator=22808022"
+  },
+  "item": [
+    {
+      "name": "Create schedule",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"id\": \"1\",\n    \"accountId\": 5,\n    \"agentId\": 2,\n    \"startTime\": \"2024-07-23T10:00:00Z\",\n    \"endTime\": \"2024-08-23T22:00:00Z\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3333/schedules",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3333",
+          "path": ["schedules"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Schedules",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3333/schedules",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3333",
+          "path": ["schedules"],
+          "query": [
+            {
+              "key": "take",
+              "value": "5",
+              "disabled": true
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Task",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"accountId\": 5,\n    \"scheduleId\": \"1\",\n    \"startTime\": \"2024-07-23T10:00:00Z\",\n    \"duration\": 60,\n    \"type\": \"work\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3333/tasks",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3333",
+          "path": ["tasks"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Task",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3333/tasks/0307b2b0-1e4e-4ee6-8e5f-95a71c581e0d",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3333",
+          "path": ["tasks", "0307b2b0-1e4e-4ee6-8e5f-95a71c581e0d"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get All Tasks",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3333/tasks",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3333",
+          "path": ["tasks"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update Task",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"duration\": 45\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3333/tasks/0307b2b0-1e4e-4ee6-8e5f-95a71c581e0d",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3333",
+          "path": ["tasks", "0307b2b0-1e4e-4ee6-8e5f-95a71c581e0d"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete Task",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3333/tasks/0307b2b0-1e4e-4ee6-8e5f-95a71c581e0d",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3333",
+          "path": ["tasks", "0307b2b0-1e4e-4ee6-8e5f-95a71c581e0d"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Schedule",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3333/schedules/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3333",
+          "path": ["schedules", "1"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Schedule By Time",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3333/filtered-schedules/2024-07-23T10:00:00Z/2024-07-23T22:00:00Z",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3333",
+          "path": [
+            "filtered-schedules",
+            "2024-07-23T10:00:00Z",
+            "2024-07-23T22:00:00Z"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update Schedule",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"startTime\": \"2024-07-23T11:00:00Z\",\n    \"endTime\": \"2024-07-23T13:00:00Z\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3333/schedules/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3333",
+          "path": ["schedules", "1"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete Schedule",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3333/schedules/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3333",
+          "path": ["schedules", "1"]
+        }
+      },
+      "response": []
+    }
+  ]
+}
