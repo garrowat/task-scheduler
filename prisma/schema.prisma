@@ -28,6 +28,7 @@ model Task {
   schedule  Schedule @relation(fields: [scheduleId], references: [id])
   scheduleId String
   startTime DateTime
+  endTime   DateTime
   duration  Int
   type      TaskType
 }
