@@ -3,7 +3,7 @@ import { PrismaService } from 'src/prisma.service';
 import { Schedule, Prisma } from '@prisma/client';
 
 @Injectable()
-export class ScheduleService {
+export class SchedulesService {
   constructor(private prisma: PrismaService) {}
 
   async schedule(
